@@ -8,7 +8,9 @@ import scala.util.Random
 import scala.sys.process._
 import java.sql.DriverManager
 
-class ScalaExample {
+import javax.swing.text.html.HTML
+
+class ScalaExample[value3:HTML] {
 
   val stringExample = "example";
 
@@ -38,15 +40,23 @@ class ScalaExample {
   // Potential Scala Anorm Injection
   val conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/clients","username","password")
 
-  def queryingSQL(value:String): Unit = {
+  def queryingSQL(value: String): Unit = {
     conn.createStatement().executeQuery("select * from people where name = '" + value + "'")
   }
+
+//  def doGet(value:String) {
+//    Ok("Hello " + value + " !").as("text/html")
+//  }
 
   def NotFound(str: String): Unit = {
     print(str);
   }
 
-  def Ok(str: String): Unit = {
+  def Ok(str: String) = {
     print(str);
+
+    def as(arg:String): Unit = {
+      print();
+    }
   }
 }
