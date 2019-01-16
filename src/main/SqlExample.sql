@@ -1,4 +1,4 @@
-SELECT value
-FROM example
-WHERE 1=1
-ORDER BY timestamp;
+SELECT id
+FROM users
+WHERE username = @username
+AND password = @password
