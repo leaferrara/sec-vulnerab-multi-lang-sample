@@ -1,15 +1,17 @@
 import java.nio.file.{Files, Paths}
+import java.sql.SQLData
 
 import sun.nio.cs.Surrogate.Parser
 
 import scala.io.Source
 import scala.util.Random
 import scala.sys.process._
-import scala.reflect.macros._
+import java.sql.DriverManager
 
 class ScalaExample {
 
   val stringExample = "example";
+
 
   // Predictable pseudorandom number generator
   def generateSecretToken() {
@@ -33,18 +35,12 @@ class ScalaExample {
     Ok("Result:\n"+result)
   }
 
-//  // Potential Scala Anorm Injection
-//  val peopleParser = Parser.parser[Person]("id", "name", "age")
-////  val peopleParser = Macro.parser[Person]("id", "name", "age")
-//
-//  DB.withConnection { implicit c =>
-//    val people: List[Person] = SQL("select * from people where name = '" + value + "'").as(peopleParser.*)
-//  }
-//
-//  db.run {
-//    sql"select * from people where name = '#$value'".as[Person]
-//  }
+  // Potential Scala Anorm Injection
+  val conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/clients","username","password")
 
+  def queryingSQL(value:String): Unit = {
+    conn.createStatement().executeQuery("select * from people where name = '" + value + "'")
+  }
 
   def NotFound(str: String): Unit = {
     print(str);
@@ -53,12 +49,4 @@ class ScalaExample {
   def Ok(str: String): Unit = {
     print(str);
   }
-}
-
-//object DB {
-//  def withConnection()
-//}
-
-class Person(val id:String, val name:String, val age:String) {
-
 }
