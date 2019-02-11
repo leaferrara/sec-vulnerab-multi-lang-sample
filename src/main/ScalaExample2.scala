@@ -15,7 +15,7 @@ class ScalaExample[value3:HTML] {
   val stringExample = "example";
 
 
-  // Path traversal
+/*  // Path traversal
   def getWordList3(value:String) {
     if (!Files.exists(Paths.get("public/lists/" + value))) {
       NotFound("File not found")
@@ -23,7 +23,7 @@ class ScalaExample[value3:HTML] {
       val result = Source.fromFile("public/lists/" + value).getLines().mkString // Weak point
       Ok(result)
     }
-  }
+  }*/
 
   def doGet(value:String) {
     Ok("Hello " + value + " !").as("text/html")
