@@ -15,11 +15,19 @@ class ScalaExample[value3:HTML] {
   val stringExample = "example";
 
 
+  // Path traversal
+  def getWordList3(value:String) {
+    if (!Files.exists(Paths.get("public/lists/" + value))) {
+      NotFound("File not found")
+    } else {
+      val result = Source.fromFile("public/lists/" + value).getLines().mkString // Weak point
+      Ok(result)
+    }
+  }
 
-
-  //  def doGet(value:String) {
-  //    Ok("Hello " + value + " !").as("text/html")
-  //  }
+  def doGet(value:String) {
+    Ok("Hello " + value + " !").as("text/html")
+  }
 
   def NotFound(str: String): Unit = {
     print(str);

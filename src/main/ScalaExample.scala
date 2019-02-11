@@ -59,4 +59,42 @@ class ScalaExample[value3:HTML] {
       print();
     }
   }
+
+  // Potential Scala Slick Injection
+  db.run {
+    sql"select * from people where name = '#$value'".as[Person]
+  }
+
+  // Potential Scala Anorm Injection
+  val peopleParser = Macro.parser[Person]("id", "name", "age")
+
+  DB.withConnection { implicit c =>
+    val people: List[Person] = SQL("select * from people where name = '" + value + "'").as(peopleParser.*)
+  }
+
+  // Potential information leakage in Scala Play
+  def doGet(value:String) = Action {
+    val configElement = configuration.underlying.getString(value)
+
+    Ok("Hello "+ configElement +" !")
+  }
+
+  // Scala Play Server-Side Request Forgery (SSRF)
+  def doGet(value:String) = Action {
+    WS.url(value).get().map { response =>
+      Ok(response.body)
+    }
+  }
+
+
+  // Potential XSS in Scala Twirl template engine
+  @(value: Html)
+  <html><h1>bla bla bla</h1></html>
+  @value
+
+
+  // Potential XSS in Scala MVC API engine
+  def doGet(value:String) = Action {
+    Ok("Hello " + value + " !").as("text/html")
+  }
 }
