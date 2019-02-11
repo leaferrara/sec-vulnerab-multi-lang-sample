@@ -25,9 +25,9 @@ class ScalaExample[value3:HTML] {
     }
   }
 
-  //  def doGet(value:String) {
-  //    Ok("Hello " + value + " !").as("text/html")
-  //  }
+  def doGet(value:String) {
+    Ok("Hello " + value + " !").as("text/html")
+  }
 
   def NotFound(str: String): Unit = {
     print(str);
