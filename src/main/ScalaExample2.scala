@@ -25,6 +25,27 @@ class ScalaExample[value3:HTML] {
     }
   }
 
+  // Path traversal
+  def getWordList333(value:String) {
+    if (!Files.exists(Paths.get("public/lists/" + value))) {
+      NotFound("File not found")
+    } else {
+      val result = Source.fromFile("public/lists/" + value).getLines().mkString // Weak point
+      Ok(result)
+    }
+  }
+
+  // Path traversal
+  def getWordList444(value:String) {
+    if (!Files.exists(Paths.get("public/lists/" + value))) {
+      NotFound("File not found")
+    } else {
+      val result = Source.fromFile("public/lists/" + value).getLines().mkString // Weak point
+      Ok(result)
+    }
+  }
+
+
   def doGet(value:String) {
     Ok("Hello " + value + " !").as("text/html")
   }
