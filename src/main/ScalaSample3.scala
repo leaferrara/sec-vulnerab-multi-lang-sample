@@ -16,7 +16,7 @@ class ScalaExample[value3:HTML] {
 
 
   // Path traversal
-  def getWordList3(value:String) {
+  def getWordList4(value:String) {
     if (!Files.exists(Paths.get("public/lists/" + value))) {
       NotFound("File not found")
     } else {
@@ -42,3 +42,4 @@ class ScalaExample[value3:HTML] {
     }
   }
 }
+
