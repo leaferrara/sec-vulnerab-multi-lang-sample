@@ -1,4 +1,4 @@
-public class XSS extends HttpServlet {
+public class XSSJavaSample extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // BAD: a request parameter is written directly to an error response page
