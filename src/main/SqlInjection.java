@@ -1,7 +1,7 @@
 public class SqlInjection {
 
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType('text/html;charset=UTF-8');
         PrintWriter out = response.getWriter();
         try {
@@ -36,4 +36,17 @@ public class SqlInjection {
         } finally {
             out.close();
         }
+
+
+    }
+
+    public static otherSqlInjection(String username) {
+        EntityManager pm = getEM();
+
+        TypedQuery<UserEntity> q = em.createQuery(
+                String.format("select * from Users where name = %s", username),
+                UserEntity.class);
+
+        UserEntity res = q.getSingleResult();
+    }
 }
