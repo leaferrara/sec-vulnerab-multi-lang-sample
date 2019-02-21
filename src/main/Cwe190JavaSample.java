@@ -1,4 +1,4 @@
-public class CWE190JavaSample {
+public class Cwe190JavaSample {
     public static void main(String[] args) {
         {
             int data = (new java.security.SecureRandom()).nextInt();
