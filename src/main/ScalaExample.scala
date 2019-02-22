@@ -97,4 +97,10 @@ class ScalaExample[value3:HTML] {
   def doGet(value:String) = Action {
     Ok("Hello " + value + " !").as("text/html")
   }*/
+
+  def main(args: Array[String]): Unit = {
+    val runtime = Runtime.getRuntime
+    //Executes potential dangerous command
+    val proc = runtime.exec("find" + " " + args(0))
+  }
 }
