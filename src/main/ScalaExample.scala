@@ -41,7 +41,7 @@ class ScalaExample[value3:HTML] {
   val conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/clients","username","password")
 
   def queryingSQL(value: String): Unit = {
-    conn.createStatement().executeQuery("select * from people where name = '" + value + "'")
+    conn.createStatement().executeQuery("select id, username from people where name = '" + value + "'")
   }
 
   //  def doGet(value:String) {
