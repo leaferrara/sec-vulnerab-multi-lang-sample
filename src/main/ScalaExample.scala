@@ -104,9 +104,29 @@ class ScalaExample[value3:HTML] {
     val proc = runtime.exec("find" + " " + args(0))
   }
 
+  // CWE-490
   import java.net.URLClassLoader
 
   val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
   val loader = new URLClassLoader(classURLs)
   val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
+
+
+  // CWE-807
+  val cookies: Array[Nothing] = request.getCookies
+  var i: Int = 0
+  while ( {
+    i < cookies.length
+  }) {
+    val c: Nothing = cookies(i)
+    if (c.getName.equals("role")) {
+      userRole = c.getValue
+    }
+
+    {
+      i += 1; i - 1
+    }
+  }
+
+
 }
