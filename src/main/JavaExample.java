@@ -43,7 +43,7 @@ public class JavaExample {
         Cipher des=Cipher.getInstance("DES...");
         des.initEncrypt(key2);
 
-
+        // CWE-759
         String plainText = new String(plainTextIn);
         MessageDigest encer = MessageDigest.getInstance("SHA");
         encer.update(plainTextIn);
@@ -65,7 +65,6 @@ public class JavaExample {
         // Now read the config
         loadConfig(configFile);
     }
-
 
 
 
