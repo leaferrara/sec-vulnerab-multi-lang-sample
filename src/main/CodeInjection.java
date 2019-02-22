@@ -1,22 +1,14 @@
-public class CodeInjection {
+import javax.script.*;
 
-    public static void sampleCodeInjection() {
-
-        String script = System.getProperty("SCRIPTNAME");
-        if (script != null)
-            System.exec(script);
-
-
-        // ---
-        String btype = request.getParameter("backuptype");
-        String cmd = new String("cmd.exe /K \"
-                c:\\util\\rmanDB.bat "
-                +btype+
-                "&&c:\\utl\\cleanup.bat\"")
-
-        System.Runtime.getRuntime().exec(cmd);
-        // ---
-
-
+public class Example1 {
+    public static void main(String[] args) {
+        try {
+            ScriptEngineManager manager = new ScriptEngineManager();
+            ScriptEngine engine = manager.getEngineByName("JavaScript");
+            System.out.println(args[0]);
+            engine.eval("print('"+ args[0] + "')");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }

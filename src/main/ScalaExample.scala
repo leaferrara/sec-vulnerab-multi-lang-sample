@@ -103,4 +103,10 @@ class ScalaExample[value3:HTML] {
     //Executes potential dangerous command
     val proc = runtime.exec("find" + " " + args(0))
   }
+
+  import java.net.URLClassLoader
+
+  val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
+  val loader = new URLClassLoader(classURLs)
+  val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
 }
