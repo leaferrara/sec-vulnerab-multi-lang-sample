@@ -128,5 +128,21 @@ class ScalaExample[value3:HTML] {
     }
   }
 
+  // CWE-311
+  import java.io.IOException
+
+  try {
+    val u = new Nothing("http://www.secret.example.org/")
+    val hu = u.openConnection.asInstanceOf[Nothing]
+    hu.setRequestMethod("PUT")
+    hu.connect
+    val os = hu.getOutputStream
+    hu.disconnect
+  } catch {
+    case e: IOException =>
+
+    //...
+  }
+
 
 }
