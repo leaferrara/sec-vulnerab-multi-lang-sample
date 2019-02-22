@@ -144,5 +144,15 @@ class ScalaExample[value3:HTML] {
     //...
   }
 
+  // CWE-732
+  private def readConfig(configFile: Nothing): Unit = {
+    if (!configFile.exists) { // Create an empty config file
+      configFile.createNewFile
+      // Make the file writable for all
+      configFile.setWritable(true, false)
+    }
+    // Now read the config
+    loadConfig(configFile)
+  }
 
 }

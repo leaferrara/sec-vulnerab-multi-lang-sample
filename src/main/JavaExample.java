@@ -54,6 +54,18 @@ public class JavaExample {
         }
     }
 
+    // CWE-732
+    private void readConfig(File configFile) {
+        if (!configFile.exists()) {
+            // Create an empty config file
+            configFile.createNewFile();
+            // Make the file writable for all
+            configFile.setWritable(true, false);
+        }
+        // Now read the config
+        loadConfig(configFile);
+    }
+
 
 
 
