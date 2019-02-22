@@ -5,4 +5,10 @@ public class XssJavaSample extends HttpServlet {
         response.sendError(HttpServletResponse.SC_NOT_FOUND,
                 "The page \"" + request.getParameter("page") + "\" was not found.");
     }
+
+    protected void doGet2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String input1 = req.getParameter("input1");
+        // ...
+        resp.getWriter().write(input1);
+    }
 }

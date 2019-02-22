@@ -155,4 +155,13 @@ class ScalaExample[value3:HTML] {
     loadConfig(configFile)
   }
 
+  // CWE-79 XSS
+  @throws[ServletException]
+  @throws[IOException]
+  protected def doGet2(req: Nothing, resp: Nothing): Unit = {
+    val input1 = req.getParameter("input1")
+    // ...
+    resp.getWriter.write(input1)
+  }
+
 }
