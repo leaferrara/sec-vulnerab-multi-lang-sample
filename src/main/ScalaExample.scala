@@ -164,4 +164,27 @@ class ScalaExample[value3:HTML] {
     resp.getWriter.write(input1)
   }
 
+  // CWE-190
+  val data: Int = (new Nothing).nextInt
+
+  // BAD: may overflow if data is large
+  val scaled: Int = data * 10
+
+  // ...
+
+  // GOOD: use a guard to ensure no overflows occur
+  var scaled2: Int = 0
+  if (data < Integer.MAX_VALUE / 10) {
+    scaled2 = data * 10
+  }
+  else {
+    scaled2 = Integer.MAX_VALUE
+  }
+
+
+  // ---
+  val i: Int = 2000000000
+  val j: Long = i * i // causes overflow
+  // --- //
+
 }
