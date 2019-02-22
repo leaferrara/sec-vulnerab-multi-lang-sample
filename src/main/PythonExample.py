@@ -12,3 +12,11 @@ print(PythonExample.func)
 
 # Output: 'This is my second class'
 print(PythonExample.__doc__)
+
+# Code Injection
+def GET(self):
+    get_input = web.input()
+    param1 = get_input['param1'] if 'param1' in get_input else None
+    if (param1):
+        x = eval(param1)
+    return "I'm vulnerable"
