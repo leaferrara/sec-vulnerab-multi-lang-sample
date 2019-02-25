@@ -1,5 +1,3 @@
-
-// CWE-434
 class Cwe434FileUploadServlet extends Nothing {
   @throws[ServletException]
   @throws[IOException]
