@@ -3,12 +3,14 @@ public class JavaExample {
     public static void main(String[] args) {
         System.out.println("Hello World");
 
+        // CWE-494
         URL[] classURLs= new URL[]{
                 new URL("file:subdir/")
         };
         URLClassLoader loader = new URLClassLoader(classURLs);
         Class loadedClass = Class.forName("loadMe", true, loader);
 
+        // CWE-807
         Cookie[] cookies = request.getCookies();
         for (int i =0; i< cookies.length; i++) {
             Cookie c = cookies[i];
@@ -17,6 +19,7 @@ public class JavaExample {
             }
         }
 
+        // CWE-311
         try {
             URL u = new URL("http://www.secret.example.org/");
             HttpURLConnection hu = (HttpURLConnection) u.openConnection();
@@ -30,20 +33,22 @@ public class JavaExample {
             //...
         }
 
-
+        // CWE-73 - #1
         String rName = request.getParameter("reportName");
         File rFile = new File("/usr/local/apfr/reports/" + rName);
         //...
         rFile.delete();
 
+        // CWE-73 - #2
         fis = new FileInputStream(cfg.getProperty("sub")+".txt");
         amt = fis.read(arr);
         out.println(arr);
 
+        // CWE-327
         Cipher des=Cipher.getInstance("DES...");
         des.initEncrypt(key2);
 
-
+        // CWE-759
         String plainText = new String(plainTextIn);
         MessageDigest encer = MessageDigest.getInstance("SHA");
         encer.update(plainTextIn);
@@ -54,6 +59,17 @@ public class JavaExample {
         }
     }
 
+    // CWE-732
+    private void readConfig(File configFile) {
+        if (!configFile.exists()) {
+            // Create an empty config file
+            configFile.createNewFile();
+            // Make the file writable for all
+            configFile.setWritable(true, false);
+        }
+        // Now read the config
+        loadConfig(configFile);
+    }
 
 
 
