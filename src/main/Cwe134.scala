@@ -2,7 +2,10 @@ import java.io.IOException
 import java.util.Calendar
 import java.util.GregorianCalendar
 
-class ResponseSplitting extends Nothing {
+
+// CWE-134
+
+class Cwe134 extends Nothing {
   @throws[ServletException]
   @throws[IOException]
   protected def doGet(request: Nothing, response: Nothing): Unit = {

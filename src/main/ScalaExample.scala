@@ -164,7 +164,7 @@ class ScalaExample[value3:HTML] {
     resp.getWriter.write(input1)
   }
 
-  // CWE-190
+  // CWE-190 ----
   val data: Int = (new Nothing).nextInt
 
   // BAD: may overflow if data is large
@@ -180,6 +180,7 @@ class ScalaExample[value3:HTML] {
   else {
     scaled2 = Integer.MAX_VALUE
   }
+  // ----- //
 
 
   // ---

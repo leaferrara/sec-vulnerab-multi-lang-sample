@@ -1,4 +1,4 @@
-public class FileUploadServlet extends HttpServlet {
+public class Cwe434FileUploadServlet extends HttpServlet {
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

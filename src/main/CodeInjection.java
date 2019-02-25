@@ -1,6 +1,7 @@
 import javax.script.*;
 
-public class Example1 {
+// CWE-94
+public class CodeInjection {
     public static void main(String[] args) {
         try {
             ScriptEngineManager manager = new ScriptEngineManager();

@@ -1,7 +1,7 @@
 import javax.script._
 
-
-object Example1 {
+// CWE-94
+object CodeInjection {
   def main(args: Array[String]): Unit = {
     try {
       val manager = new ScriptEngineManager

@@ -21,6 +21,7 @@ def GET(self):
         x = eval(param1)
     return "I'm vulnerable"
 
+# CWE-759
 def storePassword(userName,Password):
     hasher = hashlib.new('md5')
     hasher.update(Password)

@@ -40,7 +40,8 @@ public class SqlInjection {
 
     }
 
-    public static otherSqlInjection(String username) {
+    // JPA
+    public static String otherSqlInjection(String username) {
         EntityManager pm = getEM();
 
         TypedQuery<UserEntity> q = em.createQuery(

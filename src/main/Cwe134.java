@@ -1,4 +1,7 @@
-public class ResponseSplitting extends HttpServlet {
+
+// CWE-134
+
+public class Cwe134 extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Calendar expirationDate = new GregorianCalendar(2017, GregorianCalendar.SEPTEMBER, 1);
