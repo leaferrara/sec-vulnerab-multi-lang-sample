@@ -42,3 +42,4 @@ class Cwe434FileUploadServlet extends Nothing {
       }
     }
   }
+}
