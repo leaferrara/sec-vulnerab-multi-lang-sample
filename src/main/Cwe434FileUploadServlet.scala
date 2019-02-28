@@ -1,4 +1,7 @@
 class Cwe434FileUploadServlet extends Nothing {
+
+  val UPLOAD_DIRECTORY_STRING = "/tmp/uploads"
+
   @throws[ServletException]
   @throws[IOException]
   protected def doPost(request: Nothing, response: Nothing): Unit = {
