@@ -1,5 +1,13 @@
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+
 public class Cwe434FileUploadServlet extends HttpServlet {
 
+
+    private static final String UPLOAD_DIRECTORY_STRING = "/tmp";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
@@ -35,7 +43,9 @@ public class Cwe434FileUploadServlet extends HttpServlet {
                 bw.close();
 
 
-            } catch (IOException ex) {...}
+            } catch (IOException ex) {
+                return;
+            }
 // output successful upload response HTML page
         }
 // output unsuccessful upload response HTML page

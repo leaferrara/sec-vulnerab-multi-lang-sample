@@ -1,24 +1,25 @@
+import java.io.IOException;
 
 public class CommandInjection {
 
     // CWE-78
 
-    public static void sampleCommandInjection() {
+    public static void sampleCommandInjection() throws IOException {
 
         // Sample 1
         String script = System.getProperty("SCRIPTNAME");
         if (script != null)
-            System.exec(script);
+            Runtime.exec(script);
 
 
         // Sample 2 ---
         String btype = request.getParameter("backuptype");
-        String cmd = new String("cmd.exe /K \"
-                c:\\util\\rmanDB.bat "
+        String cmd = new String("cmd.exe /K \"" +
+                "c:\\util\\rmanDB.bat "
                 +btype+
-                "&&c:\\utl\\cleanup.bat\"")
+                "&&c:\\utl\\cleanup.bat\"");
 
-        System.Runtime.getRuntime().exec(cmd);
+        Runtime.getRuntime().exec(cmd);
         // --- //
 
 
