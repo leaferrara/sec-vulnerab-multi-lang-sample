@@ -71,16 +71,17 @@ class ScalaExample[value3:HTML] {
   DB.withConnection { implicit c =>
     val people: List[Person] = SQL("select * from people where name = '" + value + "'").as(peopleParser.*)
   }
+*/
 
   // Potential information leakage in Scala Play
-  def doGet(value:String) = Action {
+  def doGetLeak(value:String) = Action {
     val configElement = configuration.underlying.getString(value)
 
     Ok("Hello "+ configElement +" !")
   }
 
   // Scala Play Server-Side Request Forgery (SSRF)
-  def doGet(value:String) = Action {
+  def doGetSSRF(value:String) = Action {
     WS.url(value).get().map { response =>
       Ok(response.body)
     }
@@ -94,9 +95,9 @@ class ScalaExample[value3:HTML] {
 
 
   // Potential XSS in Scala MVC API engine
-  def doGet(value:String) = Action {
+  def doGetXSS(value:String) = Action {
     Ok("Hello " + value + " !").as("text/html")
-  }*/
+  }
 
   def main(args: Array[String]): Unit = {
     val runtime = Runtime.getRuntime
@@ -115,47 +116,57 @@ class ScalaExample[value3:HTML] {
 
     doGet2(args)
 
-  }
+    doGetLeak(args(5))
 
-  // CWE-490
-  import java.net.URLClassLoader
+    doGetSSRF(args(6))
 
-  val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
-  val loader = new URLClassLoader(classURLs)
-  val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
+    doGetXSS(args(7))
 
+    // CWE-311
+    import java.io.IOException
 
-  // CWE-807
-  val cookies: Array[Nothing] = request.getCookies
-  var i: Int = 0
-  while ( {
-    i < cookies.length
-  }) {
-    val c: Nothing = cookies(i)
-    if (c.getName.equals("role")) {
-      userRole = c.getValue
+    try {
+      val u = new Nothing("http://www.secret.example.org/")
+      val hu = u.openConnection.asInstanceOf[Nothing]
+      hu.setRequestMethod("PUT")
+      hu.connect
+      val os = hu.getOutputStream
+      hu.disconnect
+    } catch {
+      case e: IOException =>
+
+      //...
     }
 
-    {
-      i += 1; i - 1
+
+    // CWE-490
+    import java.net.URLClassLoader
+
+    val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
+    val loader = new URLClassLoader(classURLs)
+    val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
+
+
+    // CWE-807
+    val cookies: Array[Nothing] = request.getCookies
+    var i: Int = 0
+    while ( {
+      i < cookies.length
+    }) {
+      val c: Nothing = cookies(i)
+      if (c.getName.equals("role")) {
+        userRole = c.getValue
+      }
+
+      {
+        i += 1; i - 1
+      }
     }
+
+
   }
 
-  // CWE-311
-  import java.io.IOException
 
-  try {
-    val u = new Nothing("http://www.secret.example.org/")
-    val hu = u.openConnection.asInstanceOf[Nothing]
-    hu.setRequestMethod("PUT")
-    hu.connect
-    val os = hu.getOutputStream
-    hu.disconnect
-  } catch {
-    case e: IOException =>
-
-    //...
-  }
 
   // CWE-732
   def readConfig(configFile: String): Unit = {
