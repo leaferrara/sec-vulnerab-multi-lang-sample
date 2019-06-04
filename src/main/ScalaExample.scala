@@ -158,7 +158,7 @@ class ScalaExample[value3:HTML] {
       configFile.setWritable(true, false)
     }
     // Now read the config
-    loadConfig(configFile)
+    Ok(configFile)
   }
 
   // CWE-79 XSS
