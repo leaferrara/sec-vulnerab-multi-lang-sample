@@ -102,6 +102,12 @@ class ScalaExample[value3:HTML] {
     val runtime = Runtime.getRuntime
     //Executes potential dangerous command
     val proc = runtime.exec("find" + " " + args(0))
+
+    executeCommand(args(1))
+
+    readConfig(args(2))
+
+
   }
 
   // CWE-490
@@ -145,7 +151,7 @@ class ScalaExample[value3:HTML] {
   }
 
   // CWE-732
-  private def readConfig(configFile: Nothing): Unit = {
+  def readConfig(configFile: Nothing): Unit = {
     if (!configFile.exists) { // Create an empty config file
       configFile.createNewFile
       // Make the file writable for all
