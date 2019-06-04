@@ -9,8 +9,6 @@ import scala.sys.process._
 import java.sql.DriverManager
 
 import javax.swing.text.html.HTML
-import java.io.IOException
-import java.net.URLClassLoader
 
 class ScalaExample[value3:HTML] {
 
@@ -73,17 +71,16 @@ class ScalaExample[value3:HTML] {
   DB.withConnection { implicit c =>
     val people: List[Person] = SQL("select * from people where name = '" + value + "'").as(peopleParser.*)
   }
-*/
 
   // Potential information leakage in Scala Play
-  def doGetLeak(value:String) = Action {
+  def doGet(value:String) = Action {
     val configElement = configuration.underlying.getString(value)
 
     Ok("Hello "+ configElement +" !")
   }
 
   // Scala Play Server-Side Request Forgery (SSRF)
-  def doGetSSRF(value:String) = Action {
+  def doGet(value:String) = Action {
     WS.url(value).get().map { response =>
       Ok(response.body)
     }
@@ -97,9 +94,9 @@ class ScalaExample[value3:HTML] {
 
 
   // Potential XSS in Scala MVC API engine
-  def doGetXSS(value:String) = Action {
+  def doGet(value:String) = Action {
     Ok("Hello " + value + " !").as("text/html")
-  }
+  }*/
 
   def main(args: Array[String]): Unit = {
     val runtime = Runtime.getRuntime
@@ -118,60 +115,30 @@ class ScalaExample[value3:HTML] {
 
     doGet2(args)
 
-    doGetLeak(args(5))
-
-    doGetSSRF(args(6))
-
-    doGetXSS(args(7))
-
-
-
   }
-
-
-  // CWE-311
-  def cwe311(): Unit = {
-    try {
-      val u = new Nothing("http://www.secret.example.org/")
-      val hu = u.openConnection.asInstanceOf[Nothing]
-      hu.setRequestMethod("PUT")
-      hu.connect
-      val os = hu.getOutputStream
-      hu.disconnect
-    } catch {
-      case e: IOException =>
-
-      //...
-    }
-
-  }
-
 
   // CWE-490
-  def cwe490(): Unit = {
-    val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
-    val loader = new URLClassLoader(classURLs)
-    val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
-  }
+  import java.net.URLClassLoader
+
+  val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
+  val loader = new URLClassLoader(classURLs)
+  val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
 
 
   // CWE-807
-  def cwe807(): Unit = {
-    val cookies: Array[Nothing] = request.getCookies
-    var i: Int = 0
-    while ( {
-      i < cookies.length
-    }) {
-      val c: Nothing = cookies(i)
-      if (c.getName.equals("role")) {
-        userRole = c.getValue
-      }
-
-      {
-        i += 1; i - 1
-      }
+  val cookies: Array[Nothing] = request.getCookies
+  var i: Int = 0
+  while ( {
+    i < cookies.length
+  }) {
+    val c: Nothing = cookies(i)
+    if (c.getName.equals("role")) {
+      userRole = c.getValue
     }
 
+    {
+      i += 1; i - 1
+    }
   }
 
 
