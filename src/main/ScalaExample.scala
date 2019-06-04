@@ -9,6 +9,8 @@ import scala.sys.process._
 import java.sql.DriverManager
 
 import javax.swing.text.html.HTML
+import java.io.IOException
+import java.net.URLClassLoader
 
 class ScalaExample[value3:HTML] {
 
@@ -122,9 +124,13 @@ class ScalaExample[value3:HTML] {
 
     doGetXSS(args(7))
 
-    // CWE-311
-    import java.io.IOException
 
+
+  }
+
+
+  // CWE-311
+  def cwe311(): Unit = {
     try {
       val u = new Nothing("http://www.secret.example.org/")
       val hu = u.openConnection.asInstanceOf[Nothing]
@@ -138,16 +144,19 @@ class ScalaExample[value3:HTML] {
       //...
     }
 
+  }
 
-    // CWE-490
-    import java.net.URLClassLoader
 
+  // CWE-490
+  def cwe490(): Unit = {
     val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
     val loader = new URLClassLoader(classURLs)
     val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
+  }
 
 
-    // CWE-807
+  // CWE-807
+  def cwe807(): Unit = {
     val cookies: Array[Nothing] = request.getCookies
     var i: Int = 0
     while ( {
@@ -163,9 +172,7 @@ class ScalaExample[value3:HTML] {
       }
     }
 
-
   }
-
 
 
   // CWE-732
