@@ -107,6 +107,13 @@ class ScalaExample[value3:HTML] {
 
     readConfig(args(2))
 
+    generateSecretToken()
+
+    getWordList(args(3))
+
+    queryingSQL(args(4))
+
+    doGet2(args)
 
   }
 
