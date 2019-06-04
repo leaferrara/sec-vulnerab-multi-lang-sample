@@ -10,7 +10,7 @@ import java.sql.DriverManager
 
 import javax.swing.text.html.HTML
 
-class ScalaExample[value3:HTML] {
+class ScalaExample {
 
   val stringExample = "example";
 
@@ -71,14 +71,16 @@ class ScalaExample[value3:HTML] {
   DB.withConnection { implicit c =>
     val people: List[Person] = SQL("select * from people where name = '" + value + "'").as(peopleParser.*)
   }
+*/
 
   // Potential information leakage in Scala Play
-  def doGet(value:String) = Action {
+  def doGetLeak(value:String) = Action {
     val configElement = configuration.underlying.getString(value)
 
     Ok("Hello "+ configElement +" !")
   }
 
+/*
   // Scala Play Server-Side Request Forgery (SSRF)
   def doGet(value:String) = Action {
     WS.url(value).get().map { response =>
@@ -114,6 +116,8 @@ class ScalaExample[value3:HTML] {
     queryingSQL(args(4))
 
     doGet2(args)
+
+    doGetLeak(args(1))
 
   }
 
