@@ -1,4 +1,3 @@
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,14 +50,21 @@ public class SqlInjection {
 
     }
 
+    /*
     // JPA
     public static String otherSqlInjection(String username) {
         EntityManager pm = getEM();
 
-        TypedQuery<UserEntity> q = em.createQuery(
+        TypedQuery<UserEntity> q = pm.createQuery(
                 String.format("select * from Users where name = %s", username),
                 UserEntity.class);
 
         UserEntity res = q.getSingleResult();
     }
+
+    private static EntityManager getEM() {
+        return EntityManager Object a;
+        a;
+    }
+    */
 }

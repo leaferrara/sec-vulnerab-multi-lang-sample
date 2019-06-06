@@ -1,6 +1,14 @@
 
 // CWE-134
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class Cwe134 extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,5 +34,9 @@ public class Cwe134 extends HttpServlet {
                     expirationDate);
         }
 
+    }
+
+    private boolean notValid(String cardSecurityCode) {
+        return true;
     }
 }
