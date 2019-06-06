@@ -1,15 +1,18 @@
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.security.Signature;
 
 public class CommandInjection {
 
     // CWE-78
 
-    public static void sampleCommandInjection() throws IOException {
+    public static void sampleCommandInjection(HttpServletRequest request) throws IOException {
 
         // Sample 1
         String script = System.getProperty("SCRIPTNAME");
         if (script != null)
-            Runtime.exec(script);
+            Runtime.getRuntime().exec(script);
 
 
         // Sample 2 ---
