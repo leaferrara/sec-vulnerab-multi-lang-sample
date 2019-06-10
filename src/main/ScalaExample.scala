@@ -10,6 +10,8 @@ import java.sql.DriverManager
 
 import javax.swing.text.html.HTML
 
+import java.net.URLClassLoader
+
 class ScalaExample {
 
   val stringExample = "example";
@@ -119,31 +121,34 @@ class ScalaExample {
 
     doGetLeak(args(1))
 
+    cwe490()
+
   }
 
   // CWE-490
-  import java.net.URLClassLoader
+  def cwe490(): Unit = {
+    val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
+    val loader = new URLClassLoader(classURLs)
+    val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
 
-  val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
-  val loader = new URLClassLoader(classURLs)
-  val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
 
+    // CWE-807
+    val cookies: Array[Nothing] = request.getCookies
+    var i: Int = 0
+    while ( {
+      i < cookies.length
+    }) {
+      val c: Nothing = cookies(i)
+      if (c.getName.equals("role")) {
+        userRole = c.getValue
+      }
 
-  // CWE-807
-  val cookies: Array[Nothing] = request.getCookies
-  var i: Int = 0
-  while ( {
-    i < cookies.length
-  }) {
-    val c: Nothing = cookies(i)
-    if (c.getName.equals("role")) {
-      userRole = c.getValue
-    }
-
-    {
-      i += 1; i - 1
+      {
+        i += 1; i - 1
+      }
     }
   }
+
 
 
   // CWE-732
