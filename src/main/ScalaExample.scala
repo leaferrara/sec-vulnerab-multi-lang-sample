@@ -104,7 +104,7 @@ class ScalaExample {
     Ok("Hello " + value + " !").as("text/html")
   }*/
 
-  def main(args: Array[String], httpRequest: HttpRequest): Unit = {
+  def main(args: Array[String], httpRequest: HttpRequest, httpResponse: HttpServletResponse): Unit = {
     val runtime = Runtime.getRuntime
     //Executes potential dangerous command
     val proc = runtime.exec("find" + " " + args(0))
@@ -119,11 +119,42 @@ class ScalaExample {
 
     queryingSQL(args(4))
 
-    doGet2(args(0), args(1))
+    doGet2(httpRequest, args(1))
 
     doGetLeak(args(1))
 
     cwe494()
+
+    cwe807(httpRequest, httpResponse)
+
+    /*-----------------------*/
+
+    // CWE-190 ----
+  val data: Int = Random.nextInt()
+
+  // BAD: may overflow if data is large
+  val scaled: Int = data * 10
+
+  // ...
+
+  // GOOD: use a guard to ensure no overflows occur
+  var scaled2: Int = 0
+  if (data < Integer.MAX_VALUE / 10) {
+    scaled2 = data * 10
+  }
+  else {
+    scaled2 = Integer.MAX_VALUE
+  }
+  // ----- //
+
+
+  // ---
+  val i: Int = 2000000000
+  val j: Long = i * i
+  // causes overflow
+  // --- //
+
+  /*  ------------------------- */
 
   }
 
@@ -176,29 +207,6 @@ class ScalaExample {
     resp.getWriter.write(input1)
   }
 
-  // CWE-190 ----
-  val data: Int = Random.nextInt()
 
-  // BAD: may overflow if data is large
-  val scaled: Int = data * 10
-
-  // ...
-
-  // GOOD: use a guard to ensure no overflows occur
-  var scaled2: Int = 0
-  if (data < Integer.MAX_VALUE / 10) {
-    scaled2 = data * 10
-  }
-  else {
-    scaled2 = Integer.MAX_VALUE
-  }
-  // ----- //
-
-
-  // ---
-  val i: Int = 2000000000
-  val j: Long = i * i
-  // causes overflow
-  // --- //
 
 }
