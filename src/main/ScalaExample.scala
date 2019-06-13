@@ -9,8 +9,10 @@ import scala.sys.process._
 import java.sql.DriverManager
 
 import javax.swing.text.html.HTML
-
 import java.net.URLClassLoader
+
+import com.sun.deploy.net.HttpRequest
+import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 class ScalaExample {
 
@@ -102,7 +104,7 @@ class ScalaExample {
     Ok("Hello " + value + " !").as("text/html")
   }*/
 
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String], httpRequest: HttpRequest): Unit = {
     val runtime = Runtime.getRuntime
     //Executes potential dangerous command
     val proc = runtime.exec("find" + " " + args(0))
@@ -117,23 +119,26 @@ class ScalaExample {
 
     queryingSQL(args(4))
 
-    doGet2(args)
+    doGet2(args(0), args(1))
 
     doGetLeak(args(1))
 
-    cwe490()
+    cwe494()
 
   }
 
-  // CWE-490
-  def cwe490(): Unit = {
+  // CWE-494
+  def cwe494(): Unit = {
     val classURLs: Array[Nothing] = Array[Nothing](new Nothing("file:subdir/"))
     val loader = new URLClassLoader(classURLs)
     val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
 
+  }
+
+  def cwe807(request: HttpServletRequest) {
 
     // CWE-807
-    val cookies: Array[Nothing] = request.getCookies
+    val cookies: Array[Nothing] = request.getCookies()
     var i: Int = 0
     while ( {
       i < cookies.length
@@ -154,7 +159,7 @@ class ScalaExample {
   // CWE-732
   def readConfig(configFile: String): Unit = {
     if (!configFile.exists) { // Create an empty config file
-      configFile.createNewFile
+      configFile.getBytes
       // Make the file writable for all
       configFile.setWritable(true, false)
     }
@@ -163,16 +168,14 @@ class ScalaExample {
   }
 
   // CWE-79 XSS
-  @throws[ServletException]
-  @throws[IOException]
-  protected def doGet2(req: Nothing, resp: Nothing): Unit = {
+  protected def doGet2(req: HttpServletRequest, resp: HttpServletResponse): Unit = {
     val input1 = req.getParameter("input1")
     // ...
     resp.getWriter.write(input1)
   }
 
   // CWE-190 ----
-  val data: Int = (new Nothing).nextInt
+  val data: Int = Random.nextInt()
 
   // BAD: may overflow if data is large
   val scaled: Int = data * 10
@@ -192,7 +195,8 @@ class ScalaExample {
 
   // ---
   val i: Int = 2000000000
-  val j: Long = i * i // causes overflow
+  val j: Long = i * i
+  // causes overflow
   // --- //
 
 }
