@@ -133,6 +133,8 @@ class ScalaExample {
     val loader = new URLClassLoader(classURLs)
     val loadedClass: Class[_] = Class.forName("loadMe", true, loader)
 
+    loadedClass.getPackage
+
   }
 
   def cwe807(request: HttpServletRequest) {
@@ -144,8 +146,8 @@ class ScalaExample {
       i < cookies.length
     }) {
       val c: Nothing = cookies(i)
-      if (c.getName.equals("role")) {
-        userRole = c.getValue
+      if (c.equals("role")) {
+        val usrRole = c.toString
       }
 
       {
