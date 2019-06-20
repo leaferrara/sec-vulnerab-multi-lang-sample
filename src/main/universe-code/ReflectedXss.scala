@@ -145,8 +145,8 @@ class ApiHandler(
       case NonFatal(e) =>
         response.setContentType("application/json; charset=UTF-8")
         // scalastyle:off println
-        //val sanitizedRequestURI = request.getRequestURI.replaceAll("[\"\r\n]", "_") + "\""
-        response.getWriter.println(ErrorResult(s"Bad Target: ${request.getRequestURI}").toJson)
+        val sanitizedRequestURI = request.getRequestURI.replaceAll("[\"\r\n]", "_") + "\""
+        response.getWriter.println(ErrorResult(s"Bad Target: ${sanitizedRequestURI}").toJson)
         // scalastyle:on println
         response.setStatus(HttpServletResponse.SC_NOT_FOUND)
     }
