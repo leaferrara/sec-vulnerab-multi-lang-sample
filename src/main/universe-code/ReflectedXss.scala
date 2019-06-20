@@ -22,13 +22,13 @@ import com.databricks.webapp.cluster.{WebClusterManager, WebClusterManagerPlugin
 import com.databricks.webapp.libraries.LibraryManager
 import com.databricks.webapp.util.{UserSessionContextProvider, WebappConf}
 
-object ApiHandler extends Logging {
+object ReflectedXss {
 
   def createEmptyHandler(basePath: String): ApiHandler = {
     new ApiHandler(basePath, Map.empty)
   }
 
-  /** Create the API handler for a single tenant */
+
   def createHandler(
                      basePath: String,
                      conf: WebappConf,
@@ -48,64 +48,10 @@ object ApiHandler extends Logging {
     val shardServicesClientOpt = new JettyClient(conf.centralClientTimeoutSeconds,
       conf.centralClientSslArgumentsOpt)
 
-    val handlers = extraHandlers ++ Map(
-      "/1.0" -> new ApiV1Handler(
-        "/1.0",
-        conf,
-        wClusterMgr,
-        managerPlugin,
-        fileUploadHandler,
-        fileStore,
-        userSessionContextProvider,
-        ignoreCSRFCheck = ignoreCSRFCheck),
-      "/1.1" -> new ApiV11Handler(
-        "/1.1",
-        conf,
-        systemTreeMgr,
-        libraryManager,
-        wClusterMgr,
-        managerPlugin,
-        fileUploadHandler,
-        fileStore,
-        workspaceAclService,
-        userSessionContextProvider,
-        ignoreCSRFCheck = ignoreCSRFCheck),
-      "/1.2" -> new ApiV12Handler(
-        "/1.2",
-        conf,
-        systemTreeMgr,
-        libraryManager,
-        wClusterMgr,
-        managerPlugin,
-        fileUploadHandler,
-        fileStore,
-        workspaceAclService,
-        userSessionContextProvider,
-        ignoreCSRFCheck = ignoreCSRFCheck),
-      "/2.0" -> ApiProxy(
-        "/2.0",
-        new ApiProxyConf(ProjectConf.loadLocalConfig(Project.ApiServer)),
-        webappHost,
-        conf.clusterManagerHost,
-        conf.sisyphusManagerHost,
-        conf.s3CommitServiceHost,
-        conf.elasticSparkHost,
-        conf.secretManagerHost,
-        conf.mlflowHost,
-        conf.centralClientURI,
-        Some(shardServicesClientOpt),
-        ignoreCSRFCheck = ignoreCSRFCheck,
-        jobsAclInitializerOpt))
-
     new ApiHandler(basePath, handlers)
   }
 }
 
-/**
-  * A handler that multiplexes between a number of sub handlers under the basePath. A request for
-  * basePath/subBasePath/foo will be routed to the apiHandler registered at subBasePath in the
-  * map.
-  */
 class ApiHandler(
                   val basePath: String,
                   @VisibleForTesting
@@ -114,18 +60,8 @@ class ApiHandler(
   require(!basePath.endsWith("/"), "base path cannot end in `/`")
 
 
-  private def findClosestHandler(target: String): Handler = {
-    val paths = target.split("/")
-    // iteratively remove subpath elements from right end of array
-    // and rebuild path with mkString("/")
-    (0 to (paths.length-2)).foreach(toDrop => {
-      // new trimmed path with one more subpath dropped
-      val trimmedPath = paths.dropRight(toDrop).mkString("/")
-      if (apiHandlers.contains(trimmedPath)) {
+  private def findHandler(target: String): Handler = {
         return apiHandlers(trimmedPath)
-      }
-    })
-    throw new NoSuchElementException(s"No handler found for path $target")
   }
 
   override def handle(
@@ -135,19 +71,15 @@ class ApiHandler(
                        response: HttpServletResponse): Unit = {
     try {
       val realTarget = target.replaceAll("^" + basePath, "")
-      // remove /api basepath
       var trimmedTarget = realTarget
 
-      // will throw NoSuchElementException if no handler exists for any path
-      val handler: Handler = findClosestHandler(trimmedTarget)
+      val handler: Handler = findHandler(trimmedTarget)
       handler.handle(realTarget, baseRequest, request, response)
     } catch {
       case NonFatal(e) =>
         response.setContentType("application/json; charset=UTF-8")
-        // scalastyle:off println
         val sanitizedRequestURI = request.getRequestURI.matches("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]")
         response.getWriter.println(ErrorResult(s"Bad Target: ${sanitizedRequestURI}").toJson)
-        // scalastyle:on println
         response.setStatus(HttpServletResponse.SC_NOT_FOUND)
     }
   }
