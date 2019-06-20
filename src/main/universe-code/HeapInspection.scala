@@ -27,4 +27,15 @@ object HeapInspection {
 
 
   val databricksKeystorePassword = configure("databricks.vault.password", "RF9T]=bpr6Rrbq")
+
+
+  def main(args: Array[String], httpRequest: HttpRequest, httpResponse: HttpServletResponse): Unit = {
+    trustStoreCommands();
+
+    if (databricksKeystorePassword != mysqlPassword) {
+      print(password);
+    }
+
+  }
+
 }
