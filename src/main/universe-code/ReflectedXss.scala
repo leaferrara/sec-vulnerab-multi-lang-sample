@@ -1,14 +1,14 @@
 package com.databricks.webapp
 
+import java.net.URLEncoder
 import java.util.NoSuchElementException
+
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import scala.util.control.NonFatal
-
 import com.google.common.annotations.VisibleForTesting
 import org.eclipse.jetty.server.{Handler, Request}
 import org.eclipse.jetty.server.handler.AbstractHandler
-
 import com.databricks.Logging
 import com.databricks.apiclient.DbcRestApiMessage.ErrorResult
 import com.databricks.apiserver.{ApiProxy, ApiProxyConf}
@@ -145,7 +145,7 @@ class ApiHandler(
       case NonFatal(e) =>
         response.setContentType("application/json; charset=UTF-8")
         // scalastyle:off println
-        val sanitizedRequestURI = request.getRequestURI.replaceAll("[\"\r\n]", "_") + "\""
+        val sanitizedRequestURI = request.getRequestURI.matches("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]")
         response.getWriter.println(ErrorResult(s"Bad Target: ${sanitizedRequestURI}").toJson)
         // scalastyle:on println
         response.setStatus(HttpServletResponse.SC_NOT_FOUND)
